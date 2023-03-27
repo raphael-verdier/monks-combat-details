@@ -59,7 +59,7 @@
   "download": "https://github.com/raphael-verdier/monks-combat-details/archive/refs/tags/v0.1.zip",
   "manifest": "https://github.com/raphael-verdier/monks-combat-details/blob/main/module.json",
   "bugs": "https://github.com/raphael-verdier/monks-combat-details/issues",
-  "id": "monks-combat-details",
+  "id": "snoopie-combat-details",
   "compatibility": {
     "minimum": "10",
     "verified": "10"
