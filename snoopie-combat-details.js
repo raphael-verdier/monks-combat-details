@@ -6,13 +6,13 @@ import { CombatTurn } from "./js/combat-turn.js";
 export let debugEnabled = 0;
 
 export let debug = (...args) => {
-    if (debugEnabled > 1) console.log("DEBUG: monks-combat-details | ", ...args);
+    if (debugEnabled > 1) console.log("DEBUG: snoopie-combat-details | ", ...args);
 };
-export let log = (...args) => console.log("monks-combat-details | ", ...args);
+export let log = (...args) => console.log("snoopie-combat-details | ", ...args);
 export let warn = (...args) => {
-    if (debugEnabled > 0) console.warn("WARN: monks-combat-details | ", ...args);
+    if (debugEnabled > 0) console.warn("WARN: snoopie-combat-details | ", ...args);
 };
-export let error = (...args) => console.error("monks-combat-details | ", ...args);
+export let error = (...args) => console.error("snoopie-combat-details | ", ...args);
 
 export const setDebugLevel = (debugText) => {
     debugEnabled = { none: 0, warn: 1, debug: 2, all: 3 }[debugText] || 0;
@@ -25,16 +25,16 @@ export let i18n = key => {
     return game.i18n.localize(key);
 };
 export let setting = key => {
-    return game.settings.get("monks-combat-details", key);
+    return game.settings.get("snoopie-combat-details", key);
 };
 
 export let combatposition = () => {
-    return game.settings.get("monks-combat-details", "combat-position");
+    return game.settings.get("snoopie-combat-details", "combat-position");
 };
 
 export let patchFunc = (prop, func, type = "WRAPPER") => {
     if (game.modules.get("lib-wrapper")?.active) {
-        libWrapper.register("monks-combat-details", prop, func, type);
+        libWrapper.register("snoopie-combat-details", prop, func, type);
     } else {
         const oldFunc = eval(prop);
         eval(`${prop} = function (event) {
@@ -67,7 +67,7 @@ export class MonksCombatDetails {
             });
         } catch {}
 
-        MonksCombatDetails.SOCKET = "module.monks-combat-details";
+        MonksCombatDetails.SOCKET = "module.snoopie-combat-details";
 
         MonksCombatDetails._rejectlist = {
         }
@@ -103,7 +103,7 @@ export class MonksCombatDetails {
 
         patchFunc("CombatTrackerConfig.prototype._updateObject", async (wrapped, ...args) => {
             let [event, formData] = args;
-            game.settings.set("monks-combat-details", "hide-defeated", formData.hideDefeated);
+            game.settings.set("snoopie-combat-details", "hide-defeated", formData.hideDefeated);
             $('#combat-popout').toggleClass("hide-defeated", formData.hideDefeated == true);
             return wrapped(...args);
         });
@@ -120,7 +120,7 @@ export class MonksCombatDetails {
         }
 
         if (game.modules.get("lib-wrapper")?.active) {
-            libWrapper.register("monks-combat-details", "Combat.prototype.startCombat", combatStart, "MIXED");
+            libWrapper.register("snoopie-combat-details", "Combat.prototype.startCombat", combatStart, "MIXED");
         } else {
             const oldStartCombat = Combat.prototype.startCombat;
             Combat.prototype.startCombat = function () {
@@ -128,7 +128,7 @@ export class MonksCombatDetails {
             }
         }
 
-        if (game.settings.get("monks-combat-details", "prevent-token-removal")) {
+        if (game.settings.get("snoopie-combat-details", "prevent-token-removal")) {
             let oldToggleCombat = TokenHUD.prototype._onToggleCombat;
             TokenHUD.prototype._onToggleCombat = function (event) {
                 if (this.object.inCombat) {
@@ -159,17 +159,17 @@ export class MonksCombatDetails {
     static async transferSettings() {
         let swapFilename = function (value, name) {
             if (value && (name === "next-sound" || name === "turn-sound" || name === "round-sound")) {
-                value = value.replace("monks-little-details", "monks-combat-details");
+                value = value.replace("monks-little-details", "snoopie-combat-details");
             }
 
             return value;
         }
         let setSetting = async function (name) {
-            let oldChange = game.settings.settings.get(`monks-combat-details.${name}`).onChange;
-            game.settings.settings.get(`monks-combat-details.${name}`).onChange = null;
+            let oldChange = game.settings.settings.get(`snoopie-combat-details.${name}`).onChange;
+            game.settings.settings.get(`snoopie-combat-details.${name}`).onChange = null;
             let value = swapFilename(game.settings.get("monks-little-details", name), name);
-            await game.settings.set("monks-combat-details", name, value);
-            game.settings.settings.get(`monks-combat-details.${name}`).onChange = oldChange;
+            await game.settings.set("snoopie-combat-details", name, value);
+            game.settings.settings.get(`snoopie-combat-details.${name}`).onChange = oldChange;
         }
 
         await setSetting("show-combat-cr");
@@ -197,28 +197,28 @@ export class MonksCombatDetails {
         for (let scene of game.scenes) {
             for (let token of scene.tokens) {
                 if (getProperty(token, "flags.monks-little-details.displayBarsCombat")) {
-                    await token.update({ "flags.monks-combat-details.displayBarsCombat": getProperty(token, "flags.monks-little-details.displayBarsCombat") });
+                    await token.update({ "flags.snoopie-combat-details.displayBarsCombat": getProperty(token, "flags.monks-little-details.displayBarsCombat") });
                 }
             }
         }
 
         for (let actor of game.actors) {
             if (getProperty(actor.prototypeToken, "flags.monks-little-details.displayBarsCombat")) {
-                await actor.prototypeToken.update({ "flags.monks-combat-details.displayBarsCombat": getProperty(actor.prototypeToken, "flags.monks-little-details.displayBarsCombat") });
+                await actor.prototypeToken.update({ "flags.snoopie-combat-details.displayBarsCombat": getProperty(actor.prototypeToken, "flags.monks-little-details.displayBarsCombat") });
             }
         }
 
         ui.notifications.warn("Monk's Combat Details has transfered over settings from Monk's Little Details, you will need to refresh your browser for some settings to take effect.", { permanent: true });
 
-        await game.settings.set("monks-combat-details", "transfer-settings", true);
+        await game.settings.set("snoopie-combat-details", "transfer-settings", true);
     }
 
     static async transferSettingsClient() {
         let setSetting = async function (name) {
-            let oldChange = game.settings.settings.get(`monks-combat-details.${name}`).onChange;
-            game.settings.settings.get(`monks-combat-details.${name}`).onChange = null;
-            await game.settings.set("monks-combat-details", name, game.settings.get("monks-little-details", name));
-            game.settings.settings.get(`monks-combat-details.${name}`).onChange = oldChange;
+            let oldChange = game.settings.settings.get(`snoopie-combat-details.${name}`).onChange;
+            game.settings.settings.get(`snoopie-combat-details.${name}`).onChange = null;
+            await game.settings.set("snoopie-combat-details", name, game.settings.get("monks-little-details", name));
+            game.settings.settings.get(`snoopie-combat-details.${name}`).onChange = oldChange;
         }
 
         await setSetting("popout-combat");
@@ -237,7 +237,7 @@ export class MonksCombatDetails {
 
         ui.notifications.warn("Monk's Combat Details has transfered over your personal settings from Monk's Little Details, you will need to refresh your browser for some settings to take effect.", { permanent: true });
 
-        await game.settings.set("monks-combat-details", "transfer-settings-client", true);
+        await game.settings.set("snoopie-combat-details", "transfer-settings-client", true);
     }
 
     static repositionCombat(app) {
@@ -362,7 +362,7 @@ export class MonksCombatDetails {
 
         //popout combat (if gm and opencombat is everyone or gm only), (if player and opencombat is everyone or players only and popout-combat)
         if (((game.user.isGM && ['everyone', 'gmonly'].includes(opencombat)) ||
-            (!game.user.isGM && ['everyone', 'playersonly'].includes(opencombat) && game.settings.get("monks-combat-details", "popout-combat")))
+            (!game.user.isGM && ['everyone', 'playersonly'].includes(opencombat) && game.settings.get("snoopie-combat-details", "popout-combat")))
             && combatStarted) {
             //new combat, pop it out
             const tabApp = ui["combat"];
@@ -432,7 +432,7 @@ Hooks.on("deleteCombat", function (combat) {
     MonksCombatDetails.tracker = false;   //if the combat gets deleted, make sure to clear this out so that the next time the combat popout gets rendered it repositions the dialog
 
     //if there are no more combats left, then close the combat window
-    if (game.combats.combats.length == 0 && game.settings.get("monks-combat-details", 'close-combat-when-done')) {
+    if (game.combats.combats.length == 0 && game.settings.get("snoopie-combat-details", 'close-combat-when-done')) {
         const tabApp = ui["combat"];
         if (tabApp._popout != undefined) {
             MonksCombatDetails.closeCount = 0;
@@ -464,7 +464,7 @@ Hooks.on("updateCombat", async function (combat, delta) {
 
     //popout combat (if gm and opencombat is everyone or gm only), (if player and opencombat is everyone or players only and popout-combat)
     if (((game.user.isGM && ['everyone', 'gmonly'].includes(opencombat)) ||
-        (!game.user.isGM && ['everyone', 'playersonly'].includes(opencombat) && game.settings.get("monks-combat-details", "popout-combat")))
+        (!game.user.isGM && ['everyone', 'playersonly'].includes(opencombat) && game.settings.get("snoopie-combat-details", "popout-combat")))
         && combatStarted) {
 		//new combat, pop it out
 		const tabApp = ui["combat"];
@@ -553,33 +553,33 @@ Hooks.on("renderSettingsConfig", (app, html, data) => {
             return fp.browse();
         });
 
-    let parent = $('input[name="monks-combat-details.next-sound"]', html).closest('.form-group');
-    $('input[name="monks-combat-details.next-sound"]', html).css({ 'flex-basis': 'unset', 'flex-grow': 1 }).insertAfter($('input[name="monks-combat-details.play-next-sound"]', html));
+    let parent = $('input[name="snoopie-combat-details.next-sound"]', html).closest('.form-group');
+    $('input[name="snoopie-combat-details.next-sound"]', html).css({ 'flex-basis': 'unset', 'flex-grow': 1 }).insertAfter($('input[name="snoopie-combat-details.play-next-sound"]', html));
     parent.remove();
 
-    btn.clone(true).insertAfter($('input[name="monks-combat-details.next-sound"]', html));
+    btn.clone(true).insertAfter($('input[name="snoopie-combat-details.next-sound"]', html));
 
-    parent = $('input[name="monks-combat-details.turn-sound"]', html).closest('.form-group');
-    $('input[name="monks-combat-details.turn-sound"]', html).css({'flex-basis': 'unset', 'flex-grow': 1}).insertAfter($('input[name="monks-combat-details.play-turn-sound"]', html));
+    parent = $('input[name="snoopie-combat-details.turn-sound"]', html).closest('.form-group');
+    $('input[name="snoopie-combat-details.turn-sound"]', html).css({'flex-basis': 'unset', 'flex-grow': 1}).insertAfter($('input[name="snoopie-combat-details.play-turn-sound"]', html));
     parent.remove();
 
-    btn.clone(true).insertAfter($('input[name="monks-combat-details.turn-sound"]', html));
+    btn.clone(true).insertAfter($('input[name="snoopie-combat-details.turn-sound"]', html));
 
-    parent = $('input[name="monks-combat-details.round-sound"]', html).closest('.form-group');
-    $('input[name="monks-combat-details.round-sound"]', html).css({ 'flex-basis': 'unset', 'flex-grow': 1 }).insertAfter($('input[name="monks-combat-details.play-round-sound"]', html));
+    parent = $('input[name="snoopie-combat-details.round-sound"]', html).closest('.form-group');
+    $('input[name="snoopie-combat-details.round-sound"]', html).css({ 'flex-basis': 'unset', 'flex-grow': 1 }).insertAfter($('input[name="snoopie-combat-details.play-round-sound"]', html));
     parent.remove();
 
-    btn.clone(true).insertAfter($('input[name="monks-combat-details.round-sound"]', html));
+    btn.clone(true).insertAfter($('input[name="snoopie-combat-details.round-sound"]', html));
 
     //only show popout-combat if it's a player and it's available
     let opencombat = setting("opencombat");
-    $('input[name="monks-combat-details.popout-combat"]', html).closest('.form-group').toggle(!game.user.isGM && ['everyone', 'playeronly'].includes(opencombat));
+    $('input[name="snoopie-combat-details.popout-combat"]', html).closest('.form-group').toggle(!game.user.isGM && ['everyone', 'playeronly'].includes(opencombat));
 
-    $('<div>').addClass('form-group group-header').html(i18n("MonksCombatDetails.CombatPreparation")).insertBefore($('[name="monks-combat-details.prevent-initiative"]').parents('div.form-group:first'));
-    $('<div>').addClass('form-group group-header').html(i18n("MonksCombatDetails.CombatDetails")).insertBefore($('[name="monks-combat-details.clear-targets"]').parents('div.form-group:first'));
-    $('<div>').addClass('form-group group-header').html(i18n("MonksCombatDetails.CombatTracker")).insertBefore($('[name="monks-combat-details.switch-combat-tab"]').parents('div.form-group:first'));
-    $('<div>').addClass('form-group group-header').html(i18n("MonksCombatDetails.CombatBars")).insertBefore($('[name="monks-combat-details.add-combat-bars"]').parents('div.form-group:first'));
-    $('<div>').addClass('form-group group-header').html(i18n("MonksCombatDetails.CombatTurn")).insertBefore($('[name="monks-combat-details.shownextup"]').parents('div.form-group:first'));
+    $('<div>').addClass('form-group group-header').html(i18n("MonksCombatDetails.CombatPreparation")).insertBefore($('[name="snoopie-combat-details.prevent-initiative"]').parents('div.form-group:first'));
+    $('<div>').addClass('form-group group-header').html(i18n("MonksCombatDetails.CombatDetails")).insertBefore($('[name="snoopie-combat-details.clear-targets"]').parents('div.form-group:first'));
+    $('<div>').addClass('form-group group-header').html(i18n("MonksCombatDetails.CombatTracker")).insertBefore($('[name="snoopie-combat-details.switch-combat-tab"]').parents('div.form-group:first'));
+    $('<div>').addClass('form-group group-header').html(i18n("MonksCombatDetails.CombatBars")).insertBefore($('[name="snoopie-combat-details.add-combat-bars"]').parents('div.form-group:first'));
+    $('<div>').addClass('form-group group-header').html(i18n("MonksCombatDetails.CombatTurn")).insertBefore($('[name="snoopie-combat-details.shownextup"]').parents('div.form-group:first'));
 });
 
 Hooks.on("preUpdateToken", async function (document, data, options, userid) {

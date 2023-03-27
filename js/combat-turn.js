@@ -15,16 +15,16 @@ export class CombatTurn {
                     let targets = Array.from(game.user.targets).map(t => t.id);
                     log('saving targets, set target', current.name, targets);
                     if (game.user.isGM)
-                        await current.document.setFlag('monks-combat-details', 'targets', targets);
+                        await current.document.setFlag('snoopie-combat-details', 'targets', targets);
                     else
-                        await game.user.setFlag('monks-combat-details', 'targets', targets);
+                        await game.user.setFlag('snoopie-combat-details', 'targets', targets);
                 }
 
                 return wrapped(...args);
             }
 
             if (game.modules.get("lib-wrapper")?.active) {
-                libWrapper.register("monks-combat-details", "Combat.prototype.nextTurn", combatNextTurn, "WRAPPER");
+                libWrapper.register("snoopie-combat-details", "Combat.prototype.nextTurn", combatNextTurn, "WRAPPER");
             } else {
                 const oldNextTurn = Combat.prototype.nextTurn;
                 Combat.prototype.nextTurn = function (event) {
@@ -64,9 +64,9 @@ export class CombatTurn {
                     let targets = Array.from(game.user.targets).map(t => t.id);
                     log('saving targets', current.name, targets, target);
                     if (game.user.isGM)
-                        await current.document.setFlag('monks-combat-details', 'targets', targets);
+                        await current.document.setFlag('snoopie-combat-details', 'targets', targets);
                     else
-                        await game.user.setFlag('monks-combat-details', 'targets', targets);
+                        await game.user.setFlag('snoopie-combat-details', 'targets', targets);
                 }
             }
         });*/
@@ -106,9 +106,9 @@ export class CombatTurn {
             if (combat && combat.started && setting('remember-previous') && combat?.combatant?.token?.isOwner) {
                 let targets = [];
                 if (game.user.isGM)
-                    targets = combat.combatant.token.getFlag('monks-combat-details', 'targets');
+                    targets = combat.combatant.token.getFlag('snoopie-combat-details', 'targets');
                 else
-                    targets = game.user.getFlag('monks-combat-details', 'targets');
+                    targets = game.user.getFlag('snoopie-combat-details', 'targets');
 
                 log('loading targets', combat?.combatant?.token?.name, targets);
                 if (targets && targets.length > 0) {
@@ -123,9 +123,9 @@ export class CombatTurn {
                     /*
                     log('saving targets', combat.combatant.token.name, targets);
                     if (game.user.isGM)
-                        await combat.combatant.token.setFlag('monks-combat-details', 'targets', targets);
+                        await combat.combatant.token.setFlag('snoopie-combat-details', 'targets', targets);
                     else
-                        await game.user.setFlag('monks-combat-details', 'targets', targets);
+                        await game.user.setFlag('snoopie-combat-details', 'targets', targets);
                         */
                 }
             }
@@ -168,12 +168,12 @@ export class CombatTurn {
 
         Hooks.on("createChatMessage", (message, options, user) => {
             if (options.roundmarker && game.user.isGM) {
-                message.setFlag('monks-combat-details', 'roundmarker', true);
+                message.setFlag('snoopie-combat-details', 'roundmarker', true);
             }
         });
 
         Hooks.on("renderChatMessage", (message, html, data) => {
-            if (message.getFlag('monks-combat-details', 'roundmarker')) {
+            if (message.getFlag('snoopie-combat-details', 'roundmarker')) {
                 html.addClass('round-marker');
             }
         });
@@ -258,9 +258,9 @@ export class CombatTurn {
     }
 
     static ready() {
-        game.settings.settings.get("monks-combat-details.play-turn-sound").default = !game.user.isGM; //(game.user.isGM ? 0 : 60); //set the default when we have the users loaded
-        game.settings.settings.get("monks-combat-details.play-next-sound").default = !game.user.isGM;
-        game.settings.settings.get("monks-combat-details.clear-targets").default = game.user.isGM;
+        game.settings.settings.get("snoopie-combat-details.play-turn-sound").default = !game.user.isGM; //(game.user.isGM ? 0 : 60); //set the default when we have the users loaded
+        game.settings.settings.get("snoopie-combat-details.play-next-sound").default = !game.user.isGM;
+        game.settings.settings.get("snoopie-combat-details.clear-targets").default = game.user.isGM;
 
         if (setting("large-print")) {
             $("<div>").attr("id", "your-turn").appendTo('body');

@@ -11,7 +11,7 @@ export class CombatBars {
                     let token = combatant.token; //canvas.tokens.placeables.find(t => { return t.id == combatant._token.id; });
                     if (token) {
                         let displayBars = token.displayBars;
-                        let combatBar = token.getFlag('monks-combat-details', 'displayBarsCombat');
+                        let combatBar = token.getFlag('snoopie-combat-details', 'displayBarsCombat');
                         combatBar = (combatBar == undefined || combatBar == -1 ? displayBars : combatBar);
 
                         if (combatBar != displayBars) {
@@ -28,7 +28,7 @@ export class CombatBars {
             let displayBars = $('[name="displayBars"]', html).parents('div.form-group');
             let combatBars = displayBars.clone(true);
 
-            let value = (app.object instanceof TokenDocument ? app.object.getFlag('monks-combat-details', 'displayBarsCombat') : getProperty(app.object.token, "flags.monks-combat-details.displayBarsCombat"));
+            let value = (app.object instanceof TokenDocument ? app.object.getFlag('snoopie-combat-details', 'displayBarsCombat') : getProperty(app.object.token, "flags.snoopie-combat-details.displayBarsCombat"));
 
             $('[name="displayBars"]', combatBars).attr('name', 'flags.monks-licombatttle-details.displayBarsCombat').prepend($('<option>').attr('value', '-1').html('')).val(value);
             $('> label', combatBars).html(i18n("MonksCombatDetails.CombatDisplayBars"));
@@ -42,7 +42,7 @@ export class CombatBars {
                     let token = combatant.token; //canvas.tokens.placeables.find(t => { return t.id == combatant._token.id; });
                     if (token) {
                         let displayBars = token.displayBars;
-                        let combatBar = token.getFlag('monks-combat-details', 'displayBarsCombat');
+                        let combatBar = token.getFlag('snoopie-combat-details', 'displayBarsCombat');
                         combatBar = (combatBar == undefined || combatBar == -1 ? displayBars : combatBar);
 
                         if (token.object.bars.alpha != 1) {
@@ -63,7 +63,7 @@ export class CombatBars {
                 return;
 
             if (token.inCombat) {
-                let combatBar = token.document.getFlag('monks-combat-details', 'displayBarsCombat');
+                let combatBar = token.document.getFlag('snoopie-combat-details', 'displayBarsCombat');
                 if (combatBar != undefined && combatBar != -1) {
                     token.bars.visible = CombatBars.canViewCombatMode.call(token, combatBar);
                     token.bars.alpha = ((token.controlled && (combatBar == CONST.TOKEN_DISPLAY_MODES.CONTROL || combatBar == CONST.TOKEN_DISPLAY_MODES.OWNER || combatBar == CONST.TOKEN_DISPLAY_MODES.ALWAYS)) ||
@@ -76,7 +76,7 @@ export class CombatBars {
         });
 
         let tokenDrawBars = function (wrapped, ...args) {
-            if (this.inCombat && this.document.displayBars === CONST.TOKEN_DISPLAY_MODES.NONE && this.document.flags['monks-combat-details']?.displayBarsCombat !== CONST.TOKEN_DISPLAY_MODES.NONE) {
+            if (this.inCombat && this.document.displayBars === CONST.TOKEN_DISPLAY_MODES.NONE && this.document.flags['snoopie-combat-details']?.displayBarsCombat !== CONST.TOKEN_DISPLAY_MODES.NONE) {
                 this.document.displayBars = 5;
                 wrapped.call(this, ...args);
                 this.document.displayBars = CONST.TOKEN_DISPLAY_MODES.NONE;
@@ -85,7 +85,7 @@ export class CombatBars {
         }
 
         if (game.modules.get("lib-wrapper")?.active) {
-            libWrapper.register("monks-combat-details", "Token.prototype.drawBars", tokenDrawBars, "WRAPPER");
+            libWrapper.register("snoopie-combat-details", "Token.prototype.drawBars", tokenDrawBars, "WRAPPER");
         } else {
             const oldTokenDrawBars = Token.prototype.drawBars;
             Token.prototype.drawBars = function () {
@@ -96,7 +96,7 @@ export class CombatBars {
         let tokenRefreshHUD = function (wrapped, ...args) {
             wrapped.call(this, ...args);
             if (this.inCombat) {
-                let combatBar = this.document.getFlag('monks-combat-details', 'displayBarsCombat');
+                let combatBar = this.document.getFlag('snoopie-combat-details', 'displayBarsCombat');
                 if (combatBar != undefined && combatBar != -1) {
                     this.bars.visible = CombatBars.canViewCombatMode.call(this, combatBar);
                 }
@@ -104,7 +104,7 @@ export class CombatBars {
         }
 
         if (game.modules.get("lib-wrapper")?.active) {
-            libWrapper.register("monks-combat-details", "Token.prototype.refreshHUD", tokenRefreshHUD, "WRAPPER");
+            libWrapper.register("snoopie-combat-details", "Token.prototype.refreshHUD", tokenRefreshHUD, "WRAPPER");
         } else {
             const oldTokenRefreshHUD = Token.prototype.refreshHUD;
             Token.prototype.refreshHUD = function () {
@@ -124,6 +124,6 @@ export class CombatBars {
     }
 
     static updateToken(document, data) {
-        if (data?.flags && data?.flags['monks-combat-details']?.displayBarsCombat) document?._object?.drawBars();
+        if (data?.flags && data?.flags['snoopie-combat-details']?.displayBarsCombat) document?._object?.drawBars();
     }
 }
