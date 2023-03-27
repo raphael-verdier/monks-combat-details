@@ -94,13 +94,13 @@ export class CombatTurn {
             }
 
             if (combat && combat.started && setting('select-combatant')) {
-                if(user.isGM || combat?.combatant?.token?.isOwner){
+                if(game.user.isGM || combat?.combatant?.token?.isOwner){
                     combat?.combatant?.token?._object?.control();
                 }
             }
 
             if (combat && combat.started && setting("pan-to-combatant") && combat?.combatant?.token) {
-                if(user.isGM || combat?.combatant?.token?.isOwner){
+                if(game.user.isGM || combat?.combatant?.token?.isOwner){
                     if (canvas.dimensions.rect.contains(combat?.combatant?.token.x, combat?.combatant?.token.y)) {
                         canvas.animatePan({ x: combat?.combatant?.token.x, y: combat?.combatant?.token.y });
                     }
