@@ -56,7 +56,7 @@
     "css/monks-combat-details.css"
   ],
   "url": "https://github.com/raphael-verdier/monks-combat-details",
-  "download": "https://github.com/raphael-verdier/monks-combat-details/archive/10.1.zip",
+  "download": "https://github.com/raphael-verdier/monks-combat-details/archive/refs/tags/v0.1.zip",
   "manifest": "https://github.com/raphael-verdier/monks-combat-details/releases/latest/download/module.json",
   "bugs": "https://github.com/raphael-verdier/monks-combat-details/issues",
   "id": "monks-combat-details",
