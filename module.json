@@ -1,5 +1,5 @@
 {
-  "title": "Monk's Combat Details",
+  "title": "Snoopie's Combat Details",
   "description": "A bunch of quality of life things to make running combat a little easier.  Including turn notification, combat automations, combat tracker upgrades, and token status bars specifically for combat.",
   "version": "10.1",
   "authors": [
@@ -55,10 +55,10 @@
   "styles": [
     "css/monks-combat-details.css"
   ],
-  "url": "https://github.com/ironmonk88/monks-combat-details",
-  "download": "https://github.com/ironmonk88/monks-combat-details/archive/10.1.zip",
-  "manifest": "https://github.com/ironmonk88/monks-combat-details/releases/latest/download/module.json",
-  "bugs": "https://github.com/ironmonk88/monks-combat-details/issues",
+  "url": "https://github.com/raphael-verdier/monks-combat-details",
+  "download": "https://github.com/raphael-verdier/monks-combat-details/archive/10.1.zip",
+  "manifest": "https://github.com/raphael-verdier/monks-combat-details/releases/latest/download/module.json",
+  "bugs": "https://github.com/raphael-verdier/monks-combat-details/issues",
   "id": "monks-combat-details",
   "compatibility": {
     "minimum": "10",
