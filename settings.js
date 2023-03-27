@@ -1,8 +1,8 @@
-import { MonksCombatDetails, i18n } from "./monks-combat-details.js";
+import { MonksCombatDetails, i18n } from "./snoopie-combat-details.js";
 
 export const registerSettings = function () {
     // Register any custom module settings here
-	let modulename = "monks-combat-details";
+	let modulename = "snoopie-combat-details";
 
 	const debouncedReload = foundry.utils.debounce(function () { window.location.reload(); }, 500);
 	
@@ -298,7 +298,7 @@ export const registerSettings = function () {
 		hint: i18n("MonksCombatDetails.next-sound.hint"),
 		scope: "world",
 		config: true,
-		default: "modules/monks-combat-details/sounds/next.ogg",
+		default: "modules/snoopie-combat-details/sounds/next.ogg",
 		type: String,
 		//filePicker: 'audio',
 	});
@@ -307,7 +307,7 @@ export const registerSettings = function () {
 		hint: i18n("MonksCombatDetails.turn-sound.hint"),
 		scope: "world",
 		config: true,
-		default: "modules/monks-combat-details/sounds/turn.ogg",
+		default: "modules/snoopie-combat-details/sounds/turn.ogg",
 		type: String,
 		//filePicker: 'audio',
 	});
@@ -316,7 +316,7 @@ export const registerSettings = function () {
 		hint: i18n("MonksCombatDetails.round-sound.hint"),
 		scope: "world",
 		config: true,
-		default: "modules/monks-combat-details/sounds/round.ogg",
+		default: "modules/snoopie-combat-details/sounds/round.ogg",
 		type: String,
 		//filePicker: 'audio',
 	});

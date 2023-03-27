@@ -1,4 +1,4 @@
-import { MonksCombatDetails, i18n, log, debug, setting } from "../monks-combat-details.js";
+import { MonksCombatDetails, i18n, log, debug, setting } from "../snoopie-combat-details.js";
 
 export class CombatTurn {
     static shadows = {};

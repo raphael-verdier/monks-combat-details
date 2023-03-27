@@ -49,17 +49,17 @@
     }
   ],
   "esmodules": [
-    "monks-combat-details.js",
+    "snoopie-combat-details.js",
     "settings.js"
   ],
   "styles": [
-    "css/monks-combat-details.css"
+    "css/snoopie-combat-details.css"
   ],
-  "url": "https://github.com/raphael-verdier/monks-combat-details",
-  "download": "https://github.com/raphael-verdier/monks-combat-details/archive/refs/tags/v0.1.1.zip",
-  "manifest": "https://github.com/raphael-verdier/monks-combat-details/releases/download/v0.1.1/module.json",
-  "bugs": "https://github.com/raphael-verdier/monks-combat-details/issues",
-  "id": "monks-combat-details",
+  "url": "https://github.com/raphael-verdier/snoopie-combat-details",
+  "download": "https://github.com/raphael-verdier/snoopie-combat-details/archive/refs/tags/v0.1.1.zip",
+  "manifest": "https://github.com/raphael-verdier/snoopie-combat-details/releases/download/v0.1.1/module.json",
+  "bugs": "https://github.com/raphael-verdier/snoopie-combat-details/issues",
+  "id": "snoopie-combat-details",
   "compatibility": {
     "minimum": "10",
     "verified": "10"
